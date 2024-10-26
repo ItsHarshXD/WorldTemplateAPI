@@ -25,7 +25,7 @@ dependencies {
     compileOnly 'com.onarandombox.multiversecore:multiverse-core:4.3.12'
 }
 
-def targetJavaVersion = 17
+def targetJavaVersion = 8
 java {
     def javaVersion = JavaVersion.toVersion(targetJavaVersion)
     sourceCompatibility = javaVersion

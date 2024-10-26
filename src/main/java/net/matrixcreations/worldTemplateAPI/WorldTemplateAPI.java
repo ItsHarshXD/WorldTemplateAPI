@@ -192,7 +192,7 @@ public class WorldTemplateAPI {
                 null,
                 null,
                 false,
-                "TerraformGenerator"
+                null
         );
     }
 }

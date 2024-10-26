@@ -16,15 +16,24 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.logging.Level;
 
+/**
+ * The WorldTemplateAPI class provides methods for creating, loading, and deleting world templates
+ * in a Minecraft server using the Bukkit API and Multiverse-Core.
+ */
 public class WorldTemplateAPI {
 
     private final JavaPlugin plugin;
-
     private final MultiverseCore core;
     private final MVWorldManager worldManager;
     private final List<World> clonedWorlds;
     private Path templateDirectory;
 
+    /**
+     * Constructs a WorldTemplateAPI instance.
+     *
+     * @param plugin the JavaPlugin instance associated with this API
+     * @throws IllegalStateException if Multiverse-Core is not found
+     */
     public WorldTemplateAPI(JavaPlugin plugin) {
         this.plugin = plugin;
 
@@ -38,6 +47,8 @@ public class WorldTemplateAPI {
 
     /**
      * Allows the developer to specify a custom directory for storing world templates.
+     *
+     * @param directory the Path to the custom template directory
      */
     public void setTemplateDirectory(Path directory) {
         this.templateDirectory = directory;
@@ -45,19 +56,29 @@ public class WorldTemplateAPI {
 
     /**
      * Creates a template from an existing world by copying its files to the template directory.
+     *
+     * @param worldName   the name of the world to copy from
+     * @param templateName the name for the new template directory
+     * @return a CompletableFuture indicating success or failure
      */
-    public CompletableFuture<Boolean> createTemplateFromWorld(String worldName) {
+    public CompletableFuture<Boolean> createTemplateFromWorld(String worldName, String templateName) {
         World sourceWorld = Bukkit.getWorld(worldName);
         if (sourceWorld == null) {
             return CompletableFuture.failedFuture(new IllegalArgumentException("Source world '" + worldName + "' not found!"));
         }
+
         Path sourcePath = Paths.get(Bukkit.getWorldContainer().getPath(), worldName);
-        Path targetPath = templateDirectory.resolve(worldName);
+        Path targetPath = templateDirectory.resolve(templateName);
+
         return duplicateDirectory(sourcePath, targetPath);
     }
 
     /**
      * Loads a world from a template stored in the custom template directory.
+     *
+     * @param templateName   the name of the template to load
+     * @param targetWorldName the name for the newly created world
+     * @return a CompletableFuture containing the loaded World instance, or an exception if failed
      */
     public CompletableFuture<World> loadTemplate(String templateName, String targetWorldName) {
         CompletableFuture<World> future = new CompletableFuture<>();
@@ -92,6 +113,13 @@ public class WorldTemplateAPI {
         return future;
     }
 
+    /**
+     * Duplicates a directory from a source path to a target path.
+     *
+     * @param sourcePath the source directory path to copy from
+     * @param targetPath the target directory path to copy to
+     * @return a CompletableFuture indicating success or failure
+     */
     private CompletableFuture<Boolean> duplicateDirectory(Path sourcePath, Path targetPath) {
         return CompletableFuture.supplyAsync(() -> {
             try {
@@ -126,6 +154,12 @@ public class WorldTemplateAPI {
         });
     }
 
+    /**
+     * Initializes a new world with the given name.
+     *
+     * @param newWorldName the name of the world to initialize
+     * @return a CompletableFuture containing the initialized World instance, or an exception if failed
+     */
     private CompletableFuture<World> initializeWorld(String newWorldName) {
         CompletableFuture<World> future = new CompletableFuture<>();
 
@@ -158,6 +192,9 @@ public class WorldTemplateAPI {
 
     /**
      * Deletes a template world from the template directory.
+     *
+     * @param templateName the name of the template to delete
+     * @return a CompletableFuture indicating success or failure
      */
     public CompletableFuture<Boolean> deleteTemplate(String templateName) {
         Path templatePath = templateDirectory.resolve(templateName);
@@ -185,6 +222,11 @@ public class WorldTemplateAPI {
         });
     }
 
+    /**
+     * Registers the newly created world with Multiverse-Core.
+     *
+     * @param world the World instance to register
+     */
     private void registerWithMultiverse(World world) {
         worldManager.addWorld(
                 world.getName(),

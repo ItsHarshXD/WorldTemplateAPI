@@ -98,7 +98,7 @@ Contributions are welcome! If you have suggestions or improvements, feel free to
 
 ## ⚒️ Credits
 
-Special thanks to @Athishh for creating this special feature. 
+Special thanks to [@Athishh](https://github.com/Athishh) for creating this special feature. 
 
 ## 📝 License
 

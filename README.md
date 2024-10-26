@@ -96,6 +96,10 @@ CompletableFuture<Boolean> deleted = worldTemplateAPI.deleteTemplate("templateNa
 
 Contributions are welcome! If you have suggestions or improvements, feel free to fork the repository and submit a pull request. Your feedback is greatly appreciated!
 
+## ⚒️ Credits
+
+Special thanks to @Athishh for creating this special feature. 
+
 ## 📝 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.

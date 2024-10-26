@@ -1,0 +1,6 @@
+name: WorldTemplateAPI
+version: '1.0.0'
+main: net.matrixcreations.worldTemplateAPI.WorldTemplateAPI
+api-version: '1.18'
+authors: [ MatrixCreations, ItsHarshXD ]
+description: Powerful Async Template Loader for Minigames.
